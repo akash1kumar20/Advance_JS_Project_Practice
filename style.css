@@ -11,6 +11,7 @@
   font-weight: bold;
   font-family: "Times New Roman", Times, serif;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2), inset 0 0 10px rgb(239, 239, 24);
+  height: auto;
 }
 .themeBtnLight {
   position: absolute;
@@ -53,4 +54,10 @@
 }
 body {
   transition: background-color 0.25s, color 0.25s;
+}
+.hidden {
+  display: none;
+}
+.loader {
+  display: none;
 }
