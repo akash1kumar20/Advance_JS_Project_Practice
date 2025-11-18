@@ -60,13 +60,24 @@ async function checkWeather(city) {
       document.querySelector(".weather-display").style.display = "none";
       document.querySelector(".hidden").style.display = "block";
     } else {
+      if (data.weather[0].main == "Clouds") {
+        document.getElementById("weather-icon").src = "Assests/Clouds.png";
+      } else if (data.weather[0].main == "Mist") {
+        document.getElementById("weather-icon").src = "Assests/Mist.png";
+      } else if (data.weather[0].main == "Rain") {
+        document.getElementById("weather-icon").src = "Assests/Rain.png";
+      } else if (data.weather[0].main == "Snow") {
+        document.getElementById("weather-icon").src = "Assests/Snow.png";
+      } else if (data.weather[0].main == "Clear") {
+        document.getElementById("weather-icon").src = "Assests/Clear.png";
+      }
+      document.querySelector(".city-name").innerHTML = data.name.toUpperCase();
+      localStorage.setItem("lastCitySearch", data.name);
+      document.querySelector(".country").innerHTML = data.sys.country;
       document.querySelector(".temperature").innerHTML =
         degree === "°F"
           ? Math.round((data.main.temp = (data.main.temp * 9) / 5 + 32)) + "°F"
           : Math.round(data.main.temp) + "°C";
-      document.querySelector(".city-name").innerHTML = data.name.toUpperCase();
-      localStorage.setItem("lastCitySearch", data.name);
-      document.querySelector(".country").innerHTML = data.sys.country;
       document.querySelector(".description").innerHTML =
         data.weather[0].description.toUpperCase();
       document.querySelector("#humidity").innerHTML = data.main.humidity;

@@ -80,8 +80,8 @@ body {
 }
 .weather-display {
   display: none;
-  font-size: larger;
-  font-weight: 700;
+  font-size: large;
+  font-weight: 600;
 }
 .display_alert {
   margin: 15px;
