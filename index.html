@@ -53,7 +53,7 @@
           <input
             type="text"
             id="city-input"
-            name="city_input"
+            name="city"
             placeholder="Enter city name..."
             required
           />
@@ -66,42 +66,44 @@
       <main class="weather-display" id="weather-display">
         <!-- Dynamic weather info will be inserted here via JS -->
         <div class="weather-card">
-          <h2 class="city-name">--</h2>
-          <p class="country">--</p>
-          <div class="weather-main">
-            <img
-              src=""
-              ;
-              alt="Weather Icon"
-              id="weather-icon"
-              height="100px"
-              width="160px"
-            />
-            <h3 class="temperature">-- °C</h3>
-          </div>
-          <p class="description">--</p>
-
-          <div class="weather-details">
-            <div>Humidity: <span id="humidity">--</span>%</div>
-            <div>Wind: <span id="wind">--</span> m/s</div>
-            <div>Feels like: <span id="feels-like">--</span>°C</div>
-            <div>Sunrise: <span id="sunrise">--</span></div>
-            <div>Sunset: <span id="sunset">--</span></div>
+          <h2>
+            <span class="city-name"></span>, <span class="region"></span> ~
+            <span class="temperature"></span>
+          </h2>
+          <!-- Other Information -->
+          <div class="other_information">
+            <div class="image_description">
+              <div class="weather-main">
+                <img
+                  src=""
+                  alt="Weather Icon"
+                  id="weather-icon"
+                  height="100px"
+                  width="160px"
+                />
+              </div>
+              <p class="description"></p>
+            </div>
+            <div class="other_details">
+              <div class="weather-details">
+                <div>Country: <span id="country"></span></div>
+                <div>Humidity: <span id="humidity"></span> %</div>
+                <div>Feels like: <span id="feels-like"></span></div>
+                <div>Wind: <span id="wind"></span> k/h</div>
+                <div>Wind Direction: <span id="wind_direction"></span></div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
+      <!-- Forecast Display -->
+      <main class="forecast-display">
+        <div id="forecast_container"></div>
+      </main>
+
       <!-- Loading & Error -->
       <div id="loading" class="loader">Loading...</div>
       <div id="error-message" class="hidden">City not found. Try again.</div>
-      <!-- Footer -->
-      <footer class="app-footer">
-        <p>
-          Powered by
-          <a href="https://openweathermap.org/" target="_blank"
-            >OpenWeatherMap</a
-          >
-        </p>
-      </footer>
     </div>
     <script src="script.js"></script>
   </body>
