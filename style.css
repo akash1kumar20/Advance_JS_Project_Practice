@@ -148,6 +148,7 @@ body {
   display: flex;
   flex-direction: column-reverse;
   border-top: 2px solid white;
+  margin-top: 5px;
   padding-top: 5px;
 }
 #forecast_container {

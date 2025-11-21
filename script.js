@@ -1,7 +1,10 @@
+//themeToggle
 let currentTheme = JSON.parse(localStorage.getItem("theme"));
+
 if (currentTheme === null) {
   currentTheme = true; // default = light mode
 }
+
 function applyTheme() {
   if (currentTheme) {
     document.getElementById("lightTheme").style.display = "flex";
@@ -12,6 +15,7 @@ function applyTheme() {
   }
   document.body.style.backgroundColor = currentTheme ? "white" : "black";
 }
+
 function toggleTheme() {
   currentTheme = !currentTheme;
   applyTheme();
@@ -19,7 +23,22 @@ function toggleTheme() {
 }
 applyTheme();
 
-let city = "" || localStorage.getItem("lastCitySearch");
+//helpers
+function show(sel) {
+  const el = document.querySelector(sel);
+  if (el) el.style.display = "block";
+}
+function hide(sel) {
+  const el = document.querySelector(sel);
+  if (el) el.style.display = "none";
+}
+function innerText(sel, text) {
+  const el = document.querySelector(sel);
+  if (el) el.innerHTML = text;
+}
+
+//unit_and_citySearch
+let city = localStorage.getItem("lastCitySearch") ?? "";
 
 //unitToggle
 let degree = localStorage.getItem("degree") || "°C"; //default = "°C"
@@ -28,6 +47,7 @@ function convertUnitToC() {
   localStorage.setItem("degree", degree);
   checkWeather(city);
 }
+
 function convertUnitToF() {
   degree = "°F";
   localStorage.setItem("degree", degree);
@@ -39,56 +59,59 @@ function searchCityFn(e) {
   e.preventDefault();
   city = e.target.city.value;
   checkWeather(city);
-  document.getElementById("city-input").value = " ";
+  document.getElementById("city-input").value = "";
 }
 
 //weattherApiCalling
 const apiKey = "65d485af57b04e73939162556251911";
-const apiUrl = "http://api.weatherapi.com/v1/current.json?";
+const apiUrl = "https://api.weatherapi.com/v1/current.json?";
+
 async function checkWeather(city) {
   localStorage.setItem("lastCitySearch", city);
+
   if (city.length >= 3) {
-    document.querySelector(".weather-display").style.display = "block";
-    document.querySelector(".display_alert").style.display = "none";
+    show(".weather-display");
+    hide(".display_alert");
   } else {
     return;
   }
-  document.querySelector(".loader").style.display = "block";
+
+  show(".loader");
+
   try {
     let res = await fetch(apiUrl + `&q=${city}` + `&key=${apiKey}`);
     let data = await res.json();
-    if (res.status === 404) {
-      document.querySelector(".weather-display").style.display = "none";
-      document.querySelector(".hidden").style.display = "block";
+    if (!res.ok) {
+      hide(".weather-display");
+      show("#error-message");
     } else {
-      displayForecast(city, degree);
-      document.querySelector(".city-name").innerHTML =
-        data.location.name.toUpperCase();
-      localStorage.setItem("lastCitySearch", data.name);
-      document.querySelector(".region").innerHTML =
-        data.location.region.toUpperCase();
-      document.querySelector(".temperature").innerHTML =
+      hide("#error-message");
+      await displayForecast();
+      innerText(".city-name", data.location.name.toUpperCase());
+      innerText(".region", data.location.region.toUpperCase());
+      innerText(
+        ".temperature",
         degree === "°F"
           ? Math.round(data.current.temp_f) + "°F"
-          : Math.round(data.current.temp_c) + "°C";
+          : Math.round(data.current.temp_c) + "°C"
+      );
       document.querySelector("#weather-icon").src = data.current.condition.icon;
-      document.querySelector(".description").innerHTML =
-        data.current.condition.text.toUpperCase();
-      document.querySelector("#country").innerHTML =
-        data.location.country.toUpperCase();
-      document.querySelector("#humidity").innerHTML = data.current.humidity;
-      document.querySelector("#wind").innerHTML = data.current.wind_kph;
-      document.querySelector("#wind_direction").innerHTML =
-        data.current.wind_dir;
-      document.getElementById("feels-like").innerHTML =
+      innerText(".description", data.current.condition.text.toUpperCase());
+      innerText("#country", data.location.country.toUpperCase());
+      innerText("#humidity", data.current.humidity);
+      innerText("#wind", data.current.wind_kph);
+      innerText("#wind_direction", data.current.wind_dir);
+      innerText(
+        "feels-like",
         degree === "°F"
           ? Math.round(data.current.feelslike_f) + " °F"
-          : Math.round(data.current.feelslike_c) + " °C";
+          : Math.round(data.current.feelslike_c) + " °C"
+      );
     }
-    document.querySelector(".loader").style.display = "none";
+    hide(".loader");
   } catch (err) {
-    document.querySelector(".weather-display").style.display = "none";
-    document.querySelector(".loader").innerHTML = "Site down! Try later...";
+    hide(".weather-display");
+    innerText(".loader", "Site down! Try later...");
   }
 }
 
@@ -104,14 +127,18 @@ function formatForecastDate(str) {
 }
 
 //forecastApiCalling
+let lastForecastData = null;
 const apiUrlForecast =
   "https://api.weatherapi.com/v1/forecast.json?days=5&aqi=yes&alerts=no";
 
-async function displayForecast(city, degree) {
+async function displayForecast() {
+  let city = localStorage.getItem("lastCitySearch");
+  if (!city) return;
+
   try {
     const res = await fetch(`${apiUrlForecast}&key=${apiKey}&q=${city}`);
     const data = await res.json();
-
+    console.log("forecast data", data);
     const container = document.getElementById("forecast_container");
     container.innerHTML = ""; // clear previous results
 
