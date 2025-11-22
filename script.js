@@ -55,7 +55,6 @@ function convertUnitToF() {
 
 //last search
 function showLastSearch() {
-  console.log(city);
   show(".lastSearch");
   innerText(".lastSearchCity", city.toUpperCase());
 }
@@ -98,6 +97,7 @@ async function checkWeather(city) {
     } else {
       hide("#error-message");
       await displayForecast();
+      show(".unit-toggle");
       innerText(".city-name", data.location.name.toUpperCase());
       //saving lastCitySearch Name in the local storage
       localStorage.setItem("lastCitySearch", data.location.name);
