@@ -47,10 +47,20 @@ function convertUnitToC() {
   localStorage.setItem("degree", degree);
   checkWeather(city);
 }
-
 function convertUnitToF() {
   degree = "°F";
   localStorage.setItem("degree", degree);
+  checkWeather(city);
+}
+
+//last search
+function showLastSearch() {
+  console.log(city);
+  show(".lastSearch");
+  innerText(".lastSearchCity", city.toUpperCase());
+}
+if (city.length > 1) showLastSearch();
+function useLastSearch() {
   checkWeather(city);
 }
 
@@ -59,7 +69,6 @@ function searchCityFn(e) {
   e.preventDefault();
   city = e.target.city.value.trim();
   if (!city) return;
-  localStorage.setItem("lastCitySearch", city);
   document.getElementById("city-input").value = "";
   checkWeather(city);
 }
@@ -90,6 +99,8 @@ async function checkWeather(city) {
       hide("#error-message");
       await displayForecast();
       innerText(".city-name", data.location.name.toUpperCase());
+      //saving lastCitySearch Name in the local storage
+      localStorage.setItem("lastCitySearch", data.location.name);
       innerText(".region", data.location.region.toUpperCase());
       innerText(
         ".temperature",

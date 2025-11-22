@@ -85,6 +85,10 @@ body {
 .display_alert {
   margin: 15px;
   font-size: large;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 .app-footer {
   position: fixed;
@@ -165,4 +169,11 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+}
+.lastSearch {
+  color: blue;
+  display: none;
+}
+.lastSearch:hover {
+  cursor: pointer;
 }
