@@ -57,9 +57,11 @@ function convertUnitToF() {
 //citySearch
 function searchCityFn(e) {
   e.preventDefault();
-  city = e.target.city.value;
-  checkWeather(city);
+  city = e.target.city.value.trim();
+  if (!city) return;
+  localStorage.setItem("lastCitySearch", city);
   document.getElementById("city-input").value = "";
+  checkWeather(city);
 }
 
 //weattherApiCalling
@@ -138,7 +140,6 @@ async function displayForecast() {
   try {
     const res = await fetch(`${apiUrlForecast}&key=${apiKey}&q=${city}`);
     const data = await res.json();
-    console.log("forecast data", data);
     const container = document.getElementById("forecast_container");
     container.innerHTML = ""; // clear previous results
 
@@ -172,4 +173,77 @@ async function displayForecast() {
   } catch (err) {
     console.log("Forecast error:", err);
   }
+}
+
+//geoLocation
+const useLocationBtn = document.getElementById("use-location-btn");
+
+// Settings for geolocation
+const GEO_OPTIONS = {
+  enableHighAccuracy: true,
+  timeout: 10000, // 10 seconds
+  maximumAge: 300000, // 5 minutes
+};
+
+function requestLocation() {
+  if (useLocationBtn) {
+    useLocationBtn.disabled = true;
+    useLocationBtn.textContent = "Locating...";
+  }
+
+  if (!("geolocation" in navigator)) {
+    // Browser doesn't support geolocation
+    alert("Geolocation is not supported by your browser.");
+    restoreLocationBtn();
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      try {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        city = `${lat},${lon}`;
+        localStorage.setItem("lastCitySearch", city);
+        await checkWeather(city);
+
+        //to indicate we used geolocation
+        const info = document.getElementById("location-info");
+        if (info) info.textContent = "Using device location";
+      } catch (err) {
+        console.error("Error after getting position:", err);
+      } finally {
+        restoreLocationBtn();
+      }
+    },
+    (error) => {
+      //geolocation errors
+      restoreLocationBtn();
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert(
+            "Permission denied. Please allow location access or search by city."
+          );
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert(
+            "Position unavailable. Try again later or enter a city manually."
+          );
+          break;
+        case error.TIMEOUT:
+          alert("Location request timed out. Try again.");
+          break;
+        default:
+          alert("Unable to retrieve your location.");
+      }
+    },
+    GEO_OPTIONS
+  );
+}
+
+function restoreLocationBtn() {
+  if (!useLocationBtn) return;
+  useLocationBtn.disabled = false;
+  useLocationBtn.innerHTML = `<img src="Assests/pngegg.png" alt="location" width="16" height="16" /> Use my location`;
 }

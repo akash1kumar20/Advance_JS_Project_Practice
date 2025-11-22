@@ -59,9 +59,26 @@
           />
           <button type="submit">Search</button>
         </form>
+        <button
+          id="use-location-btn"
+          type="button"
+          title="Use my location"
+          onclick="requestLocation()"
+        >
+          <img
+            src="/Assests/pngegg.png"
+            alt="location"
+            width="16"
+            height="16"
+          />
+          Use my location
+        </button>
       </section>
       <!-- Info Message  -->
-      <div class="display_alert">Please Enter a City Name</div>
+      <p id="location-info"></p>
+      <div class="display_alert">
+        Please Enter a City Name or Allow us to Access your Location
+      </div>
       <!-- Main Weather Display -->
       <main class="weather-display" id="weather-display">
         <!-- Dynamic weather info will be inserted here via JS -->
