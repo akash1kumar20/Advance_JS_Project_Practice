@@ -152,6 +152,16 @@ body {
   justify-content: space-evenly;
   align-items: center;
 }
+.weather-main {
+  padding: 2px;
+  background-color: rgba(75, 150, 225, 0.4);
+  border-radius: 20rem;
+}
+.description {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: rgb(117, 77, 77);
+}
 #weather-icon {
   border-radius: 20rem;
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);

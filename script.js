@@ -115,7 +115,7 @@ async function checkWeather(city) {
       innerText("#wind", data.current.wind_kph);
       innerText("#wind_direction", data.current.wind_dir);
       innerText(
-        "feels-like",
+        "#feels-like",
         degree === "°F"
           ? Math.round(data.current.feelslike_f) + " °F"
           : Math.round(data.current.feelslike_c) + " °C"
